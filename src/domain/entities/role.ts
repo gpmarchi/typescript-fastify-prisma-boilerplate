@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto'
+import { Entity } from '@/shared/entities/entity'
 import { Slug } from './value-objects/slug'
 
 interface RoleProps {
@@ -8,18 +8,4 @@ interface RoleProps {
   permissions?: string[]
 }
 
-export class Role {
-  public id: string
-  public slug: Slug
-  public title: string
-  public description: string
-  public permissions: string[]
-
-  constructor(props: RoleProps, id?: string) {
-    this.slug = props.slug
-    this.title = props.title
-    this.description = props.description
-    this.permissions = props.permissions ?? []
-    this.id = id ?? randomUUID()
-  }
-}
+export class Role extends Entity<RoleProps> {}

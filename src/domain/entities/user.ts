@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto'
+import { Entity } from '@/shared/entities/entity'
 
 interface UserProps {
   firstName: string
@@ -10,24 +10,8 @@ interface UserProps {
   permissions?: string[]
 }
 
-export class User {
-  public id: string
-  public firstName: string
-  public lastName: string
-  public age: number
-  public email: string
-  public phone: string
-  public roles: string[]
-  public permissions: string[]
-
-  constructor(props: UserProps, id?: string) {
-    this.firstName = props.firstName
-    this.lastName = props.lastName
-    this.age = props.age
-    this.email = props.email
-    this.phone = props.phone
-    this.roles = props.roles ?? []
-    this.permissions = props.permissions ?? []
-    this.id = id ?? randomUUID()
+export class User extends Entity<UserProps> {
+  get firstName() {
+    return this.props.firstName
   }
 }
