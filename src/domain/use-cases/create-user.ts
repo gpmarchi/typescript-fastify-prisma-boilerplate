@@ -6,6 +6,8 @@ interface CreateUserUseCaseRequest {
   age: number
   email: string
   phone: string
+  roles?: string[]
+  permissions?: string[]
 }
 
 export class CreateUserUseCase {
@@ -15,8 +17,18 @@ export class CreateUserUseCase {
     age,
     email,
     phone,
+    roles,
+    permissions,
   }: CreateUserUseCaseRequest) {
-    const user = new User(firstName, lastName, age, email, phone)
+    const user = new User({
+      firstName,
+      lastName,
+      age,
+      email,
+      phone,
+      roles,
+      permissions,
+    })
 
     return user
   }
