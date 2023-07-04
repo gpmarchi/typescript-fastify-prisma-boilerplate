@@ -1,14 +1,15 @@
 import { randomUUID } from 'crypto'
+import { Slug } from './value-objects/slug'
 
 interface PermissionProps {
-  slug: string
+  slug: Slug
   title: string
   description: string
 }
 
 export class Permission {
   public id: string
-  public slug: string
+  public slug: Slug
   public title: string
   public description: string
 

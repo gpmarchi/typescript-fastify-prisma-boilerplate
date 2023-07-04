@@ -1,7 +1,8 @@
 import { randomUUID } from 'crypto'
+import { Slug } from './value-objects/slug'
 
 interface RoleProps {
-  slug: string
+  slug: Slug
   title: string
   description: string
   permissions?: string[]
@@ -9,7 +10,7 @@ interface RoleProps {
 
 export class Role {
   public id: string
-  public slug: string
+  public slug: Slug
   public title: string
   public description: string
   public permissions: string[]
