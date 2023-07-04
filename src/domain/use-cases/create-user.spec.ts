@@ -1,10 +1,15 @@
-import { expect, test } from 'vitest'
+import { UsersRepository } from '@/repositories/users-repository'
+import { User } from '../entities/user'
 import { CreateUserUseCase } from './create-user'
 
-test('create an user', () => {
-  const createUser = new CreateUserUseCase()
+const fakeUsersRepository: UsersRepository = {
+  create: async (user: User) => {},
+}
 
-  const user = createUser.execute({
+test('create an user', async () => {
+  const createUser = new CreateUserUseCase(fakeUsersRepository)
+
+  const user = await createUser.execute({
     firstName: 'John',
     lastName: 'Doe',
     age: 21,

@@ -1,3 +1,4 @@
+import { UsersRepository } from '@/repositories/users-repository'
 import { User } from '../entities/user'
 
 interface CreateUserUseCaseRequest {
@@ -11,7 +12,9 @@ interface CreateUserUseCaseRequest {
 }
 
 export class CreateUserUseCase {
-  execute({
+  constructor(private usersRepository: UsersRepository) {}
+
+  async execute({
     firstName,
     lastName,
     age,
@@ -29,6 +32,8 @@ export class CreateUserUseCase {
       roles,
       permissions,
     })
+
+    await this.usersRepository.create(user)
 
     return user
   }
