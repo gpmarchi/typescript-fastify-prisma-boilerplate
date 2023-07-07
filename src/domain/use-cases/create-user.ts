@@ -23,7 +23,7 @@ export class CreateUserUseCase {
     roles,
     permissions,
   }: CreateUserUseCaseRequest) {
-    const user = new User({
+    const user = User.create({
       firstName,
       lastName,
       age,
