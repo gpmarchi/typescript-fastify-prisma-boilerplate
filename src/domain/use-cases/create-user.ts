@@ -4,7 +4,7 @@ import { User } from '../entities/user'
 interface CreateUserUseCaseRequest {
   firstName: string
   lastName: string
-  age: number
+  birthDate: Date
   email: string
   phone: string
   roles?: string[]
@@ -17,7 +17,7 @@ export class CreateUserUseCase {
   async execute({
     firstName,
     lastName,
-    age,
+    birthDate,
     email,
     phone,
     roles,
@@ -26,7 +26,7 @@ export class CreateUserUseCase {
     const user = User.create({
       firstName,
       lastName,
-      age,
+      birthDate,
       email,
       phone,
       roles,

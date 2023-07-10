@@ -1,4 +1,5 @@
 import { UsersRepository } from '@/repositories/users-repository'
+import { subYears } from 'date-fns'
 import { User } from '../entities/user'
 import { CreateUserUseCase } from './create-user'
 
@@ -12,7 +13,7 @@ test('create an user', async () => {
   const user = await createUser.execute({
     firstName: 'John',
     lastName: 'Doe',
-    age: 21,
+    birthDate: subYears(new Date(), 40),
     email: 'john@example.com',
     phone: '123',
   })

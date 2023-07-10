@@ -5,7 +5,7 @@ import { Optional } from '@/shared/types/optional'
 interface UserProps {
   firstName: string
   lastName: string
-  age: number
+  birthDate: Date
   email: string
   phone: string
   roles?: string[]
