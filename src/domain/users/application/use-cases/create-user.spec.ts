@@ -1,6 +1,6 @@
-import { UsersRepository } from '@/repositories/users-repository'
 import { subYears } from 'date-fns'
-import { User } from '../entities/user'
+import { User } from '../../enterprise/entities/user'
+import { UsersRepository } from '../repositories/users-repository'
 import { CreateUserUseCase } from './create-user'
 
 const fakeUsersRepository: UsersRepository = {

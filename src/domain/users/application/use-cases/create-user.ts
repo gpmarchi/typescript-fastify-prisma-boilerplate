@@ -1,5 +1,5 @@
-import { UsersRepository } from '@/repositories/users-repository'
-import { User } from '../entities/user'
+import { User } from '../../enterprise/entities/user'
+import { UsersRepository } from '../repositories/users-repository'
 
 interface CreateUserUseCaseRequest {
   firstName: string
