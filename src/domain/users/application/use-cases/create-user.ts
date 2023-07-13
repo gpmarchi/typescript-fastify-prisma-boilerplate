@@ -1,3 +1,4 @@
+import { HashProvider } from '@/shared/providers/hash-provider'
 import { User } from '../../enterprise/entities/user'
 import { UsersRepository } from '../repositories/users-repository'
 
@@ -6,6 +7,7 @@ interface CreateUserUseCaseRequest {
   lastName: string
   birthDate: Date
   email: string
+  password: string
   phone: string
   roles?: string[]
   permissions?: string[]
@@ -16,22 +18,29 @@ interface CreateUserUseCaseResponse {
 }
 
 export class CreateUserUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    private usersRepository: UsersRepository,
+    private hashProvider: HashProvider,
+  ) {}
 
   async execute({
     firstName,
     lastName,
     birthDate,
     email,
+    password,
     phone,
     roles,
     permissions,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
+    const hashedPassword = await this.hashProvider.generateHash(password)
+
     const user = User.create({
       firstName,
       lastName,
       birthDate,
       email,
+      password: hashedPassword,
       phone,
       roles,
       permissions,

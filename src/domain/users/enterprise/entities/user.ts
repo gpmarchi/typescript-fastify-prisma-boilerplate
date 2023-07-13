@@ -8,6 +8,7 @@ interface UserProps {
   lastName: string
   birthDate: Date
   email: string
+  password: string
   phone: string
   roles?: string[]
   permissions?: string[]
@@ -38,6 +39,10 @@ export class User extends Entity<UserProps> {
 
   get email() {
     return this.props.email
+  }
+
+  get password() {
+    return this.props.password
   }
 
   get phone() {
@@ -84,6 +89,12 @@ export class User extends Entity<UserProps> {
 
   set email(email: string) {
     this.props.email = email
+
+    this.update()
+  }
+
+  set password(password: string) {
+    this.props.password = password
 
     this.update()
   }
