@@ -1,6 +1,5 @@
-import { subYears } from 'date-fns'
+import { makeUser } from 'test/factories/make-user'
 import { InMemoryUsersRepository } from 'test/repositories/users/in-memory-users-repository'
-import { User } from '../../enterprise/entities/user'
 import { GetUserByEmailUseCase } from './get-user-by-email'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
@@ -13,13 +12,7 @@ describe('Get User By Email', () => {
   })
 
   it('should be able to get an user by email', async () => {
-    const newUser = User.create({
-      firstName: 'John',
-      lastName: 'Doe',
-      birthDate: subYears(new Date(), 40),
-      email: 'john@example.com',
-      phone: '123',
-    })
+    const newUser = makeUser()
 
     await inMemoryUsersRepository.create(newUser)
 

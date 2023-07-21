@@ -3,7 +3,7 @@ import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id
 import { Optional } from '@/shared/types/optional'
 import { differenceInYears } from 'date-fns'
 
-interface UserProps {
+export interface UserProps {
   firstName: string
   lastName: string
   birthDate: Date
