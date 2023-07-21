@@ -12,12 +12,14 @@ describe('Get User By Email', () => {
   })
 
   it('should be able to get an user by email', async () => {
-    const newUser = makeUser()
+    const newUser = makeUser({
+      email: 'test@example.com',
+    })
 
     await inMemoryUsersRepository.create(newUser)
 
     const { user } = await sut.execute({
-      email: 'john@example.com',
+      email: 'test@example.com',
     })
 
     expect(user.id).toBeTruthy()
