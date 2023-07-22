@@ -1,4 +1,4 @@
-import { HashProvider } from '@/shared/providers/hash-provider'
+import { HashProvider } from '@/shared/providers/hash-provider/interfaces/hash-provider'
 import { User } from '../../enterprise/entities/user'
 import { UsersRepository } from '../repositories/users-repository'
 
