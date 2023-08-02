@@ -50,12 +50,13 @@ export class Permission extends Entity<PermissionProps> {
   }
 
   static create(
-    props: Optional<PermissionProps, 'createdAt'>,
+    props: Optional<PermissionProps, 'createdAt' | 'slug'>,
     id?: UniqueEntityID,
   ) {
     const permission = new Permission(
       {
         ...props,
+        slug: Slug.createFromText(props.title),
         createdAt: new Date(),
       },
       id,
