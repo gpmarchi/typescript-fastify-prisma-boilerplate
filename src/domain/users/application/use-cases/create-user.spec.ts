@@ -42,7 +42,9 @@ describe('Create User', () => {
     expect(user.permissions).toBe(undefined)
     expect(user.createdAt).toBeTruthy()
     expect(user.updatedAt).toBe(undefined)
-    expect(inMemoryUsersRepository.items[0].id).toEqual(user.id)
+    expect(inMemoryUsersRepository.items[0].id.toString()).toEqual(
+      user.id.toString(),
+    )
 
     vi.useRealTimers()
   })
