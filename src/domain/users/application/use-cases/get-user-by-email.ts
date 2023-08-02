@@ -1,4 +1,5 @@
 import { User } from '../../enterprise/entities/user'
+import { UserNotFoundError } from '../errors/user-not-found-error'
 import { UsersRepository } from '../repositories/users-repository'
 
 interface GetUserByEmailUseCaseRequest {
@@ -18,7 +19,7 @@ export class GetUserByEmailUseCase {
     const user = await this.usersRepository.findByEmail(email)
 
     if (!user) {
-      throw new Error('User not found.')
+      throw new UserNotFoundError()
     }
 
     return {
