@@ -7,7 +7,7 @@ interface RoleProps {
   slug: Slug
   title: string
   description: string
-  permissions?: string[]
+  permissions: string[]
   createdAt: Date
   updatedAt?: Date
 }
@@ -25,7 +25,7 @@ export class Role extends Entity<RoleProps> {
     return this.props.description
   }
 
-  get permissions(): string[] | undefined {
+  get permissions(): string[] {
     return this.props.permissions
   }
 
