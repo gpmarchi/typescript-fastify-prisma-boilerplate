@@ -60,10 +60,14 @@ export class Role extends Entity<RoleProps> {
     this.update()
   }
 
-  static create(props: Optional<RoleProps, 'createdAt'>, id?: UniqueEntityID) {
+  static create(
+    props: Optional<RoleProps, 'createdAt' | 'slug'>,
+    id?: UniqueEntityID,
+  ) {
     const role = new Role(
       {
         ...props,
+        slug: Slug.createFromText(props.title),
         createdAt: new Date(),
       },
       id,
