@@ -11,6 +11,7 @@ export function makeUser(override: Partial<UserProps> = {}) {
     email: faker.internet.email(),
     password: faker.internet.password(),
     phone: faker.phone.number(),
+    roles: [],
     ...override,
   })
 

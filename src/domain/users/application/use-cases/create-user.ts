@@ -9,8 +9,7 @@ interface CreateUserUseCaseRequest {
   email: string
   password: string
   phone: string
-  roles?: string[]
-  permissions?: string[]
+  roles: string[]
 }
 
 interface CreateUserUseCaseResponse {
@@ -31,7 +30,6 @@ export class CreateUserUseCase {
     password,
     phone,
     roles,
-    permissions,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     const hashedPassword = await this.hashProvider.generateHash(password)
 
@@ -43,7 +41,6 @@ export class CreateUserUseCase {
       password: hashedPassword,
       phone,
       roles,
-      permissions,
     })
 
     await this.usersRepository.create(user)

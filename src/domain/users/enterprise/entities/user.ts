@@ -10,8 +10,7 @@ export interface UserProps {
   email: string
   password: string
   phone: string
-  roles?: string[]
-  permissions?: string[]
+  roles: string[]
   createdAt: Date
   updatedAt?: Date
 }
@@ -51,10 +50,6 @@ export class User extends Entity<UserProps> {
 
   get roles(): string[] | undefined {
     return this.props.roles
-  }
-
-  get permissions(): string[] | undefined {
-    return this.props.permissions
   }
 
   get createdAt() {
@@ -107,12 +102,6 @@ export class User extends Entity<UserProps> {
 
   set roles(roles: string[]) {
     this.props.roles = roles
-
-    this.update()
-  }
-
-  set permissions(permissions: string[]) {
-    this.props.permissions = permissions
 
     this.update()
   }

@@ -28,6 +28,7 @@ describe('Create User', () => {
       email: 'john@example.com',
       password: '123456',
       phone: '123',
+      roles: [],
     })
 
     expect(user.firstName).toEqual('John')
@@ -38,8 +39,7 @@ describe('Create User', () => {
     expect(user.email).toEqual('john@example.com')
     expect(user.password).toBeTruthy()
     expect(user.phone).toEqual('123')
-    expect(user.roles).toBe(undefined)
-    expect(user.permissions).toBe(undefined)
+    expect(user.roles).toEqual([])
     expect(user.createdAt).toBeTruthy()
     expect(user.updatedAt).toBe(undefined)
     expect(inMemoryUsersRepository.items[0].id.toString()).toEqual(
