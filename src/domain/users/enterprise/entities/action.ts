@@ -4,6 +4,7 @@ import { Optional } from '@/shared/types/optional'
 import { Slug } from './value-objects/slug'
 
 export interface ActionProps {
+  resourceId: UniqueEntityID
   slug: Slug
   title: string
   description: string
@@ -12,6 +13,10 @@ export interface ActionProps {
 }
 
 export class Action extends Entity<ActionProps> {
+  get resourceId() {
+    return this.props.resourceId
+  }
+
   get slug() {
     return this.props.slug
   }

@@ -1,8 +1,10 @@
+import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id'
 import { Action } from '../../enterprise/entities/action'
 import { ActionAlreadyExistsError } from '../errors/action-already-exists-error'
 import { ActionsRepository } from '../repositories/actions-repository'
 
 interface CreateActionUseCaseRequest {
+  resourceId: string
   title: string
   description: string
 }
@@ -15,6 +17,7 @@ export class CreateActionUseCase {
   constructor(private actionsRepository: ActionsRepository) {}
 
   async execute({
+    resourceId,
     title,
     description,
   }: CreateActionUseCaseRequest): Promise<CreateActionUseCaseResponse> {
@@ -25,6 +28,7 @@ export class CreateActionUseCase {
     }
 
     const action = Action.create({
+      resourceId: new UniqueEntityID(resourceId),
       title,
       description,
     })
