@@ -3,7 +3,7 @@ import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id
 import { Optional } from '@/shared/types/optional'
 import { Slug } from './value-objects/slug'
 
-export interface PermissionProps {
+export interface ActionProps {
   slug: Slug
   title: string
   description: string
@@ -11,7 +11,7 @@ export interface PermissionProps {
   updatedAt?: Date
 }
 
-export class Permission extends Entity<PermissionProps> {
+export class Action extends Entity<ActionProps> {
   get slug() {
     return this.props.slug
   }
@@ -50,10 +50,10 @@ export class Permission extends Entity<PermissionProps> {
   }
 
   static create(
-    props: Optional<PermissionProps, 'createdAt' | 'slug'>,
+    props: Optional<ActionProps, 'createdAt' | 'slug'>,
     id?: UniqueEntityID,
   ) {
-    const permission = new Permission(
+    const action = new Action(
       {
         ...props,
         slug: Slug.createFromText(props.title),
@@ -62,6 +62,6 @@ export class Permission extends Entity<PermissionProps> {
       id,
     )
 
-    return permission
+    return action
   }
 }
