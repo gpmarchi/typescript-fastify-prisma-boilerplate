@@ -17,7 +17,6 @@ describe('Create Role', () => {
     const { role } = await sut.execute({
       title: 'Fake role',
       description: 'New fake role',
-      permissions: ['permission-1'],
     })
 
     expect(inMemoryRolesRepository.items[0].id.toString()).toEqual(
@@ -26,7 +25,6 @@ describe('Create Role', () => {
     expect(role.title).toEqual('Fake role')
     expect(role.description).toEqual('New fake role')
     expect(role.slug.value).toEqual('fake-role')
-    expect(role.permissions.length).toEqual(1)
     expect(role.createdAt).toBeTruthy()
     expect(role.updatedAt).toBeFalsy()
   })
@@ -35,7 +33,6 @@ describe('Create Role', () => {
     const role = Role.create({
       title: 'Fake role',
       description: 'New fake role',
-      permissions: ['permission-1'],
     })
 
     await inMemoryRolesRepository.create(role)
@@ -44,7 +41,6 @@ describe('Create Role', () => {
       sut.execute({
         title: 'Fake role',
         description: 'New fake role',
-        permissions: ['permission-1'],
       }),
     ).rejects.toBeInstanceOf(RoleAlreadyExistsError)
   })

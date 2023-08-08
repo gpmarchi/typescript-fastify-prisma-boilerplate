@@ -7,7 +7,6 @@ interface RoleProps {
   slug: Slug
   title: string
   description: string
-  permissions: string[]
   createdAt: Date
   updatedAt?: Date
 }
@@ -23,10 +22,6 @@ export class Role extends Entity<RoleProps> {
 
   get description() {
     return this.props.description
-  }
-
-  get permissions(): string[] {
-    return this.props.permissions
   }
 
   get createdAt() {
@@ -50,12 +45,6 @@ export class Role extends Entity<RoleProps> {
 
   set description(description: string) {
     this.props.description = description
-
-    this.update()
-  }
-
-  set permissions(permissions: string[]) {
-    this.props.permissions = permissions
 
     this.update()
   }

@@ -5,7 +5,6 @@ import { RolesRepository } from '../repositories/roles-repository'
 interface CreateRoleUseCaseRequest {
   title: string
   description: string
-  permissions: string[]
 }
 
 interface CreateRoleUseCaseResponse {
@@ -18,7 +17,6 @@ export class CreateRoleUseCase {
   async execute({
     title,
     description,
-    permissions,
   }: CreateRoleUseCaseRequest): Promise<CreateRoleUseCaseResponse> {
     const existingRole = await this.rolesRepository.findByTitle(title)
 
@@ -29,7 +27,6 @@ export class CreateRoleUseCase {
     const role = Role.create({
       title,
       description,
-      permissions,
     })
 
     await this.rolesRepository.create(role)
