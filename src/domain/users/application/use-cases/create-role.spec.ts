@@ -1,4 +1,3 @@
-import { makePermission } from 'test/factories/make-permission'
 import { InMemoryRolesRepository } from 'test/repositories/users/in-memory-roles-repository'
 import { Role } from '../../enterprise/entities/role'
 import { RoleAlreadyExistsError } from '../errors/role-already-exists-error'
@@ -15,12 +14,10 @@ describe('Create Role', () => {
   })
 
   it('should be able to create a role', async () => {
-    const permission = makePermission()
-
     const { role } = await sut.execute({
       title: 'Fake role',
       description: 'New fake role',
-      permissions: [permission.id.toString()],
+      permissions: ['permission-1'],
     })
 
     expect(inMemoryRolesRepository.items[0].id.toString()).toEqual(
@@ -35,12 +32,10 @@ describe('Create Role', () => {
   })
 
   it('should not be able to create a role that already exists', async () => {
-    const permission = makePermission()
-
     const role = Role.create({
       title: 'Fake role',
       description: 'New fake role',
-      permissions: [permission.id.toString()],
+      permissions: ['permission-1'],
     })
 
     await inMemoryRolesRepository.create(role)
@@ -49,7 +44,7 @@ describe('Create Role', () => {
       sut.execute({
         title: 'Fake role',
         description: 'New fake role',
-        permissions: [permission.id.toString()],
+        permissions: ['permission-1'],
       }),
     ).rejects.toBeInstanceOf(RoleAlreadyExistsError)
   })
