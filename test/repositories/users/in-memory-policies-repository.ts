@@ -14,6 +14,14 @@ export class InMemoryPoliciesRepository implements PoliciesRepository {
     return policy
   }
 
+  async countByIds(ids: string[]): Promise<number> {
+    const count = this.items.filter((item) =>
+      ids.includes(item.id.toString()),
+    ).length
+
+    return count
+  }
+
   async create(policy: Policy): Promise<void> {
     this.items.push(policy)
   }

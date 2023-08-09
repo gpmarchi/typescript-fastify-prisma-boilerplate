@@ -7,6 +7,7 @@ interface RoleProps {
   slug: Slug
   title: string
   description: string
+  policies: UniqueEntityID[]
   createdAt: Date
   updatedAt?: Date
 }
