@@ -1,7 +1,9 @@
 import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id'
 import { Action } from '../../enterprise/entities/action'
 import { ActionAlreadyExistsError } from '../errors/action-already-exists-error'
+import { ResourceNotFoundError } from '../errors/resource-not-found-error'
 import { ActionsRepository } from '../repositories/actions-repository'
+import { ResourcesRepository } from '../repositories/resources-repository'
 
 interface CreateActionUseCaseRequest {
   resourceId: string
@@ -14,7 +16,10 @@ interface CreateActionUseCaseResponse {
 }
 
 export class CreateActionUseCase {
-  constructor(private actionsRepository: ActionsRepository) {}
+  constructor(
+    private actionsRepository: ActionsRepository,
+    private resourcesRepository: ResourcesRepository,
+  ) {}
 
   async execute({
     resourceId,
@@ -25,6 +30,12 @@ export class CreateActionUseCase {
 
     if (existingAction) {
       throw new ActionAlreadyExistsError()
+    }
+
+    const resource = await this.resourcesRepository.findById(resourceId)
+
+    if (!resource) {
+      throw new ResourceNotFoundError()
     }
 
     const action = Action.create({

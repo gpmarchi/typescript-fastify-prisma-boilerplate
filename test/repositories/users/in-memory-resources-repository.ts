@@ -14,6 +14,18 @@ export class InMemoryResourcesRepository implements ResourcesRepository {
     return resource
   }
 
+  async findById(id: string): Promise<Resource | null> {
+    const resource = this.items.find(
+      (resource) => resource.id.toString() === id,
+    )
+
+    if (!resource) {
+      return null
+    }
+
+    return resource
+  }
+
   async create(resource: Resource): Promise<void> {
     this.items.push(resource)
   }
