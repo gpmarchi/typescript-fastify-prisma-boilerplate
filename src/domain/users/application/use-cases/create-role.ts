@@ -1,15 +1,15 @@
 import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id'
 import { Role } from '../../enterprise/entities/role'
-import { InvalidPolicyError } from '../errors/invalid-policy-error'
-import { NoPolicyProvidedError } from '../errors/no-policy-provided-error'
+import { InvalidPermissionError } from '../errors/invalid-permission-error'
+import { NoPermissionProvidedError } from '../errors/no-permission-provided-error'
 import { RoleAlreadyExistsError } from '../errors/role-already-exists-error'
-import { PoliciesRepository } from '../repositories/policies-repository'
+import { PermissionsRepository } from '../repositories/permissions-repository'
 import { RolesRepository } from '../repositories/roles-repository'
 
 interface CreateRoleUseCaseRequest {
   title: string
   description: string
-  policies: string[]
+  permissions: string[]
 }
 
 interface CreateRoleUseCaseResponse {
@@ -19,13 +19,13 @@ interface CreateRoleUseCaseResponse {
 export class CreateRoleUseCase {
   constructor(
     private rolesRepository: RolesRepository,
-    private policiesRepository: PoliciesRepository,
+    private permissionsRepository: PermissionsRepository,
   ) {}
 
   async execute({
     title,
     description,
-    policies,
+    permissions: policies,
   }: CreateRoleUseCaseRequest): Promise<CreateRoleUseCaseResponse> {
     const existingRole = await this.rolesRepository.findByTitle(title)
 
@@ -34,19 +34,19 @@ export class CreateRoleUseCase {
     }
 
     if (policies.length === 0) {
-      throw new NoPolicyProvidedError()
+      throw new NoPermissionProvidedError()
     }
 
-    const validPolicies = await this.policiesRepository.countByIds(policies)
+    const validPolicies = await this.permissionsRepository.countByIds(policies)
 
     if (validPolicies === 0 || validPolicies < policies.length) {
-      throw new InvalidPolicyError()
+      throw new InvalidPermissionError()
     }
 
     const role = Role.create({
       title,
       description,
-      policies: policies.map((policy) => new UniqueEntityID(policy)),
+      permissions: policies.map((policy) => new UniqueEntityID(policy)),
     })
 
     await this.rolesRepository.create(role)

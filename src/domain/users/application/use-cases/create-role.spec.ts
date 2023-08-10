@@ -1,39 +1,39 @@
 import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id'
-import { makePolicy } from 'test/factories/make-policy'
-import { InMemoryPoliciesRepository } from 'test/repositories/users/in-memory-policies-repository'
+import { makePermission } from 'test/factories/make-permission'
+import { InMemoryPermissionsRepository } from 'test/repositories/users/in-memory-permissions-repository'
 import { InMemoryRolesRepository } from 'test/repositories/users/in-memory-roles-repository'
 import { Role } from '../../enterprise/entities/role'
-import { InvalidPolicyError } from '../errors/invalid-policy-error'
-import { NoPolicyProvidedError } from '../errors/no-policy-provided-error'
+import { InvalidPermissionError } from '../errors/invalid-permission-error'
+import { NoPermissionProvidedError } from '../errors/no-permission-provided-error'
 import { RoleAlreadyExistsError } from '../errors/role-already-exists-error'
 import { CreateRoleUseCase } from './create-role'
 
 let inMemoryRolesRepository: InMemoryRolesRepository
-let inMemoryPoliciesRepository: InMemoryPoliciesRepository
+let inMemoryPermissionsRepository: InMemoryPermissionsRepository
 let sut: CreateRoleUseCase
 
 describe('Create Role', () => {
   beforeEach(() => {
     inMemoryRolesRepository = new InMemoryRolesRepository()
-    inMemoryPoliciesRepository = new InMemoryPoliciesRepository()
+    inMemoryPermissionsRepository = new InMemoryPermissionsRepository()
 
     sut = new CreateRoleUseCase(
       inMemoryRolesRepository,
-      inMemoryPoliciesRepository,
+      inMemoryPermissionsRepository,
     )
   })
 
   it('should be able to create a role', async () => {
     for (let i = 0; i < 5; i++) {
-      await inMemoryPoliciesRepository.create(
-        makePolicy({}, new UniqueEntityID(`policy-${i + 1}`)),
+      await inMemoryPermissionsRepository.create(
+        makePermission({}, new UniqueEntityID(`permission-${i + 1}`)),
       )
     }
 
     const { role } = await sut.execute({
       title: 'Fake role',
       description: 'New fake role',
-      policies: ['policy-1', 'policy-2', 'policy-3'],
+      permissions: ['permission-1', 'permission-2', 'permission-3'],
     })
 
     expect(inMemoryRolesRepository.items[0].id.toString()).toEqual(
@@ -50,7 +50,7 @@ describe('Create Role', () => {
     const role = Role.create({
       title: 'Fake role',
       description: 'New fake role',
-      policies: [new UniqueEntityID('policy-1')],
+      permissions: [new UniqueEntityID('permission-1')],
     })
 
     await inMemoryRolesRepository.create(role)
@@ -59,7 +59,7 @@ describe('Create Role', () => {
       sut.execute({
         title: 'Fake role',
         description: 'New fake role',
-        policies: ['policy-1'],
+        permissions: ['permission-1'],
       }),
     ).rejects.toBeInstanceOf(RoleAlreadyExistsError)
   })
@@ -69,15 +69,15 @@ describe('Create Role', () => {
       sut.execute({
         title: 'Fake role',
         description: 'New fake role',
-        policies: [],
+        permissions: [],
       }),
-    ).rejects.toBeInstanceOf(NoPolicyProvidedError)
+    ).rejects.toBeInstanceOf(NoPermissionProvidedError)
   })
 
   it('should not be able to create a role with invalid policies', async () => {
     for (let i = 0; i < 5; i++) {
-      await inMemoryPoliciesRepository.create(
-        makePolicy({}, new UniqueEntityID(`policy-${i + 1}`)),
+      await inMemoryPermissionsRepository.create(
+        makePermission({}, new UniqueEntityID(`permission-${i + 1}`)),
       )
     }
 
@@ -85,8 +85,13 @@ describe('Create Role', () => {
       sut.execute({
         title: 'Fake role',
         description: 'New fake role',
-        policies: ['policy-1', 'policy-2', 'policy-3', 'policy-10'],
+        permissions: [
+          'permission-1',
+          'permission-2',
+          'permission-3',
+          'permission-10',
+        ],
       }),
-    ).rejects.toBeInstanceOf(InvalidPolicyError)
+    ).rejects.toBeInstanceOf(InvalidPermissionError)
   })
 })

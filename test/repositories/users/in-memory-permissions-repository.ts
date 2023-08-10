@@ -16,6 +16,14 @@ export class InMemoryPermissionsRepository implements PermissionsRepository {
     return permission
   }
 
+  async countByIds(ids: string[]): Promise<number> {
+    const count = this.items.filter((item) =>
+      ids.includes(item.id.toString()),
+    ).length
+
+    return count
+  }
+
   async create(permission: Permission): Promise<void> {
     this.items.push(permission)
   }
