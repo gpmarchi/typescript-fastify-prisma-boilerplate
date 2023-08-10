@@ -1,12 +1,12 @@
 import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id'
 import { Action } from '../../enterprise/entities/action'
 import { ActionAlreadyExistsError } from '../errors/action-already-exists-error'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { EndpointNotFoundError } from '../errors/endpoint-not-found-error'
 import { ActionsRepository } from '../repositories/actions-repository'
-import { ResourcesRepository } from '../repositories/resources-repository'
+import { EndpointsRepository } from '../repositories/endpoints-repository'
 
 interface CreateActionUseCaseRequest {
-  resourceId: string
+  endpointId: string
   title: string
   description: string
 }
@@ -18,11 +18,11 @@ interface CreateActionUseCaseResponse {
 export class CreateActionUseCase {
   constructor(
     private actionsRepository: ActionsRepository,
-    private resourcesRepository: ResourcesRepository,
+    private endpointsRepository: EndpointsRepository,
   ) {}
 
   async execute({
-    resourceId,
+    endpointId,
     title,
     description,
   }: CreateActionUseCaseRequest): Promise<CreateActionUseCaseResponse> {
@@ -32,14 +32,14 @@ export class CreateActionUseCase {
       throw new ActionAlreadyExistsError()
     }
 
-    const resource = await this.resourcesRepository.findById(resourceId)
+    const endpoint = await this.endpointsRepository.findById(endpointId)
 
-    if (!resource) {
-      throw new ResourceNotFoundError()
+    if (!endpoint) {
+      throw new EndpointNotFoundError()
     }
 
     const action = Action.create({
-      resourceId: new UniqueEntityID(resourceId),
+      endpointId: new UniqueEntityID(endpointId),
       title,
       description,
     })

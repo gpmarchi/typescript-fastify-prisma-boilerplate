@@ -1,34 +1,34 @@
 import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id'
-import { makeResource } from 'test/factories/make-resource'
+import { makeEndpoint } from 'test/factories/make-endpoint'
 import { InMemoryActionsRepository } from 'test/repositories/users/in-memory-actions-repository'
-import { InMemoryResourcesRepository } from 'test/repositories/users/in-memory-resources-repository'
+import { InMemoryEndpointsRepository } from 'test/repositories/users/in-memory-endpoints-repository'
 import { Action } from '../../enterprise/entities/action'
 import { ActionAlreadyExistsError } from '../errors/action-already-exists-error'
-import { ResourceNotFoundError } from '../errors/resource-not-found-error'
+import { EndpointNotFoundError } from '../errors/endpoint-not-found-error'
 import { CreateActionUseCase } from './create-action'
 
 let inMemoryActionsRepository: InMemoryActionsRepository
-let inMemoryResourcesRepository: InMemoryResourcesRepository
+let inMemoryEndpointsRepository: InMemoryEndpointsRepository
 let sut: CreateActionUseCase
 
 describe('Create Action', () => {
   beforeEach(() => {
     inMemoryActionsRepository = new InMemoryActionsRepository()
-    inMemoryResourcesRepository = new InMemoryResourcesRepository()
+    inMemoryEndpointsRepository = new InMemoryEndpointsRepository()
 
     sut = new CreateActionUseCase(
       inMemoryActionsRepository,
-      inMemoryResourcesRepository,
+      inMemoryEndpointsRepository,
     )
   })
 
   it('should be able to create an action', async () => {
-    await inMemoryResourcesRepository.create(
-      makeResource({}, new UniqueEntityID('resource-1')),
+    await inMemoryEndpointsRepository.create(
+      makeEndpoint({}, new UniqueEntityID('endpoint-1')),
     )
 
     const { action } = await sut.execute({
-      resourceId: 'resource-1',
+      endpointId: 'endpoint-1',
       title: 'Fake action',
       description: 'New fake action',
     })
@@ -36,7 +36,7 @@ describe('Create Action', () => {
     expect(inMemoryActionsRepository.items[0].id.toString()).toEqual(
       action.id.toString(),
     )
-    expect(action.resourceId.toString()).toEqual('resource-1')
+    expect(action.endpointId.toString()).toEqual('endpoint-1')
     expect(action.title).toEqual('Fake action')
     expect(action.description).toEqual('New fake action')
     expect(action.slug.value).toEqual('fake-action')
@@ -46,7 +46,7 @@ describe('Create Action', () => {
 
   it('should not be able to create an action that already exists', async () => {
     const action = Action.create({
-      resourceId: new UniqueEntityID('resource-1'),
+      endpointId: new UniqueEntityID('endpoint-1'),
       title: 'Fake action',
       description: 'New fake action',
     })
@@ -55,20 +55,20 @@ describe('Create Action', () => {
 
     await expect(
       sut.execute({
-        resourceId: 'resource-1',
+        endpointId: 'endpoint-1',
         title: 'Fake action',
         description: 'New fake action',
       }),
     ).rejects.toBeInstanceOf(ActionAlreadyExistsError)
   })
 
-  it('should not be able to create an action with inexistent resource', async () => {
+  it('should not be able to create an action with inexistent endpoint', async () => {
     await expect(
       sut.execute({
-        resourceId: 'resource-1',
+        endpointId: 'endpoint-1',
         title: 'Fake action',
         description: 'New fake action',
       }),
-    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+    ).rejects.toBeInstanceOf(EndpointNotFoundError)
   })
 })

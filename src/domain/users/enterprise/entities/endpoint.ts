@@ -2,15 +2,15 @@ import { Entity } from '@/shared/entities/entity'
 import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id'
 import { Optional } from '@/shared/types/optional'
 
-export interface ResourceProps {
+export interface EndpointProps {
   title: string
   description: string
-  endpoint: string
+  uri: string
   createdAt: Date
   updatedAt?: Date
 }
 
-export class Resource extends Entity<ResourceProps> {
+export class Endpoint extends Entity<EndpointProps> {
   get title() {
     return this.props.title
   }
@@ -19,8 +19,8 @@ export class Resource extends Entity<ResourceProps> {
     return this.props.description
   }
 
-  get endpoint() {
-    return this.props.endpoint
+  get uri() {
+    return this.props.uri
   }
 
   get createdAt() {
@@ -47,17 +47,17 @@ export class Resource extends Entity<ResourceProps> {
     this.update()
   }
 
-  set endpoint(endpoint: string) {
-    this.props.endpoint = endpoint
+  set uri(uri: string) {
+    this.props.uri = uri
 
     this.update()
   }
 
   static create(
-    props: Optional<ResourceProps, 'createdAt'>,
+    props: Optional<EndpointProps, 'createdAt'>,
     id?: UniqueEntityID,
   ) {
-    const resource = new Resource(
+    const endpoint = new Endpoint(
       {
         ...props,
         createdAt: new Date(),
@@ -65,6 +65,6 @@ export class Resource extends Entity<ResourceProps> {
       id,
     )
 
-    return resource
+    return endpoint
   }
 }

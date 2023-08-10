@@ -9,7 +9,7 @@ export function makeAction(
 ) {
   const action = Action.create(
     {
-      resourceId: new UniqueEntityID(),
+      endpointId: new UniqueEntityID(),
       title: faker.lorem.words(),
       description: faker.lorem.sentence(),
       ...override,
