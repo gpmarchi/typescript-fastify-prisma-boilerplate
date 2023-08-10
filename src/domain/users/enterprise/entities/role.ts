@@ -3,7 +3,7 @@ import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id
 import { Optional } from '@/shared/types/optional'
 import { Slug } from './value-objects/slug'
 
-interface RoleProps {
+export interface RoleProps {
   slug: Slug
   title: string
   description: string

@@ -1,16 +1,27 @@
+import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id'
+import { makeRole } from 'test/factories/make-role'
 import { FakeHashProvider } from 'test/providers/fake-hash-provider'
+import { InMemoryRolesRepository } from 'test/repositories/users/in-memory-roles-repository'
 import { InMemoryUsersRepository } from 'test/repositories/users/in-memory-users-repository'
+import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
 import { CreateUserUseCase } from './create-user'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
+let inMemoryRolesRepository: InMemoryRolesRepository
 let fakeHashProvider: FakeHashProvider
 let sut: CreateUserUseCase
 
 describe('Create User', () => {
   beforeEach(() => {
     inMemoryUsersRepository = new InMemoryUsersRepository()
+    inMemoryRolesRepository = new InMemoryRolesRepository()
     fakeHashProvider = new FakeHashProvider()
-    sut = new CreateUserUseCase(inMemoryUsersRepository, fakeHashProvider)
+
+    sut = new CreateUserUseCase(
+      inMemoryUsersRepository,
+      inMemoryRolesRepository,
+      fakeHashProvider,
+    )
   })
 
   it('should be able to create an user', async () => {
@@ -21,6 +32,10 @@ describe('Create User', () => {
 
     const birthDate = new Date(1980, 5, 11)
 
+    const role = makeRole({}, new UniqueEntityID('role-1'))
+
+    await inMemoryRolesRepository.create(role)
+
     const { user } = await sut.execute({
       firstName: 'John',
       lastName: 'Doe',
@@ -28,7 +43,7 @@ describe('Create User', () => {
       email: 'john@example.com',
       password: '123456',
       phone: '123',
-      roles: [],
+      roles: [role.id.toString()],
     })
 
     expect(user.firstName).toEqual('John')
@@ -39,7 +54,6 @@ describe('Create User', () => {
     expect(user.email).toEqual('john@example.com')
     expect(user.password).toBeTruthy()
     expect(user.phone).toEqual('123')
-    expect(user.roles).toEqual([])
     expect(user.createdAt).toBeTruthy()
     expect(user.updatedAt).toBe(undefined)
     expect(inMemoryUsersRepository.items[0].id.toString()).toEqual(
@@ -47,5 +61,61 @@ describe('Create User', () => {
     )
 
     vi.useRealTimers()
+  })
+
+  it('should not be able to create an user with the same email', async () => {
+    const role = makeRole({}, new UniqueEntityID('role-1'))
+
+    await inMemoryRolesRepository.create(role)
+
+    await sut.execute({
+      firstName: 'John',
+      lastName: 'Doe',
+      birthDate: new Date(),
+      email: 'john@example.com',
+      password: '123456',
+      phone: '123',
+      roles: [role.id.toString()],
+    })
+
+    await expect(
+      sut.execute({
+        firstName: 'John',
+        lastName: 'Doe',
+        birthDate: new Date(),
+        email: 'john@example.com',
+        password: '123456',
+        phone: '123',
+        roles: [role.id.toString()],
+      }),
+    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
+  })
+
+  it('should not be able to create an user with no roles', async () => {
+    await expect(
+      sut.execute({
+        firstName: 'John',
+        lastName: 'Doe',
+        birthDate: new Date(),
+        email: 'john@example.com',
+        password: '123456',
+        phone: '123',
+        roles: [],
+      }),
+    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
+  })
+
+  it('should not be able to create an user with inexistent roles', async () => {
+    await expect(
+      sut.execute({
+        firstName: 'John',
+        lastName: 'Doe',
+        birthDate: new Date(),
+        email: 'john@example.com',
+        password: '123456',
+        phone: '123',
+        roles: ['invalid-role'],
+      }),
+    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
   })
 })
