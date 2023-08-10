@@ -25,7 +25,7 @@ export class CreateRoleUseCase {
   async execute({
     title,
     description,
-    permissions: policies,
+    permissions,
   }: CreateRoleUseCaseRequest): Promise<CreateRoleUseCaseResponse> {
     const existingRole = await this.rolesRepository.findByTitle(title)
 
@@ -33,20 +33,22 @@ export class CreateRoleUseCase {
       throw new RoleAlreadyExistsError()
     }
 
-    if (policies.length === 0) {
+    if (permissions.length === 0) {
       throw new NoPermissionProvidedError()
     }
 
-    const validPolicies = await this.permissionsRepository.countByIds(policies)
+    const validPermissions = await this.permissionsRepository.countByIds(
+      permissions,
+    )
 
-    if (validPolicies === 0 || validPolicies < policies.length) {
+    if (validPermissions === 0 || validPermissions < permissions.length) {
       throw new InvalidPermissionError()
     }
 
     const role = Role.create({
       title,
       description,
-      permissions: policies.map((policy) => new UniqueEntityID(policy)),
+      permissions: permissions.map((policy) => new UniqueEntityID(policy)),
     })
 
     await this.rolesRepository.create(role)
