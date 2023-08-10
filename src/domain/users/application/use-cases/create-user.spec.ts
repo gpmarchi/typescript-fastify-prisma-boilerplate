@@ -3,6 +3,8 @@ import { makeRole } from 'test/factories/make-role'
 import { FakeHashProvider } from 'test/providers/fake-hash-provider'
 import { InMemoryRolesRepository } from 'test/repositories/users/in-memory-roles-repository'
 import { InMemoryUsersRepository } from 'test/repositories/users/in-memory-users-repository'
+import { InvalidRoleError } from '../errors/invalid-role-error'
+import { NoRoleProvidedError } from '../errors/no-role-provided-error'
 import { UserAlreadyExistsError } from '../errors/user-already-exists-error'
 import { CreateUserUseCase } from './create-user'
 
@@ -102,7 +104,7 @@ describe('Create User', () => {
         phone: '123',
         roles: [],
       }),
-    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
+    ).rejects.toBeInstanceOf(NoRoleProvidedError)
   })
 
   it('should not be able to create an user with inexistent roles', async () => {
@@ -116,6 +118,6 @@ describe('Create User', () => {
         phone: '123',
         roles: ['invalid-role'],
       }),
-    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
+    ).rejects.toBeInstanceOf(InvalidRoleError)
   })
 })
