@@ -64,7 +64,7 @@ describe('Create Role', () => {
     ).rejects.toBeInstanceOf(RoleAlreadyExistsError)
   })
 
-  it('should not be able to create a role with no policies', async () => {
+  it('should not be able to create a role with no permissions', async () => {
     await expect(
       sut.execute({
         title: 'Fake role',
@@ -74,7 +74,7 @@ describe('Create Role', () => {
     ).rejects.toBeInstanceOf(NoPermissionProvidedError)
   })
 
-  it('should not be able to create a role with invalid policies', async () => {
+  it('should not be able to create a role with invalid permissions', async () => {
     for (let i = 0; i < 5; i++) {
       await inMemoryPermissionsRepository.create(
         makePermission({}, new UniqueEntityID(`permission-${i + 1}`)),
