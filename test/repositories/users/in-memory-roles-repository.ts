@@ -14,6 +14,14 @@ export class InMemoryRolesRepository implements RolesRepository {
     return role
   }
 
+  async countByIds(ids: string[]): Promise<number> {
+    const count = this.items.filter((item) =>
+      ids.includes(item.id.toString()),
+    ).length
+
+    return count
+  }
+
   async create(role: Role): Promise<void> {
     this.items.push(role)
   }

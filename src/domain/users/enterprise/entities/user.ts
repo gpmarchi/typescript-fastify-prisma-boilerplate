@@ -10,7 +10,7 @@ export interface UserProps {
   email: string
   password: string
   phone: string
-  roles: string[]
+  roles: UniqueEntityID[]
   createdAt: Date
   updatedAt?: Date
 }
@@ -46,10 +46,6 @@ export class User extends Entity<UserProps> {
 
   get phone() {
     return this.props.phone
-  }
-
-  get roles(): string[] | undefined {
-    return this.props.roles
   }
 
   get createdAt() {
@@ -96,12 +92,6 @@ export class User extends Entity<UserProps> {
 
   set phone(phone: string) {
     this.props.phone = phone
-
-    this.update()
-  }
-
-  set roles(roles: string[]) {
-    this.props.roles = roles
 
     this.update()
   }
