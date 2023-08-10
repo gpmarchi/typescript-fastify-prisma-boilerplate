@@ -48,7 +48,9 @@ export class CreateRoleUseCase {
     const role = Role.create({
       title,
       description,
-      permissions: permissions.map((policy) => new UniqueEntityID(policy)),
+      permissions: permissions.map(
+        (permission) => new UniqueEntityID(permission),
+      ),
     })
 
     await this.rolesRepository.create(role)
