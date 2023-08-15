@@ -12,8 +12,22 @@ model Endpoint {
   title       String      @unique
   description String
   uri         String
+  permission  Permission?
   createdAt   DateTime    @default(now()) @map(name: "created_at")
   updatedAt   DateTime?   @map(name: "updated_at")
 
   @@map("endpoints")
+}
+
+model Permission {
+  id          String    @id @default(uuid())
+  endpointId  String    @unique @map(name: "endpoint_id")
+  endpoint    Endpoint  @relation(fields: [endpointId], references: [id], onDelete: Cascade)
+  slug        String
+  title       String
+  description String
+  createdAt   DateTime  @default(now()) @map(name: "created_at")
+  updatedAt   DateTime? @map(name: "updated_at")
+
+  @@map("permissions")
 }
