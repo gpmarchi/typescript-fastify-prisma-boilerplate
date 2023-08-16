@@ -1,6 +1,6 @@
 import { EndpointsRepository } from '@/domain/users/application/repositories/endpoints-repository'
 import { Endpoint } from '@/domain/users/enterprise/entities/endpoint'
-import { prisma } from '@/shared/lib/prisma'
+import { prisma } from '@/shared/infra/database/prisma'
 import { PrismaEndpointMapper } from '../mappers/prisma-endpoint-mapper'
 
 export class PrismaEndpointsRepository implements EndpointsRepository {
