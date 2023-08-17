@@ -1,3 +1,6 @@
+import 'reflect-metadata'
+
+import '@/shared/container'
 import { env } from '@/shared/env'
 import { app } from './app'
 

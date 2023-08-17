@@ -1,3 +1,4 @@
+import { inject, injectable } from 'tsyringe'
 import { Endpoint } from '../../enterprise/entities/endpoint'
 import { EndpointAlreadyExistsError } from '../errors/endpoint-already-exists-error'
 import { EndpointsRepository } from '../repositories/endpoints-repository'
@@ -12,8 +13,12 @@ interface CreateEndpointUseCaseResponse {
   endpoint: Endpoint
 }
 
+@injectable()
 export class CreateEndpointUseCase {
-  constructor(private endpointsRepository: EndpointsRepository) {}
+  constructor(
+    @inject('EndpointsRepository')
+    private endpointsRepository: EndpointsRepository,
+  ) {}
 
   async execute({
     title,
