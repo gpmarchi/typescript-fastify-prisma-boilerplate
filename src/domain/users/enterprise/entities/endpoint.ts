@@ -15,12 +15,30 @@ export class Endpoint extends Entity<EndpointProps> {
     return this.props.title
   }
 
+  set title(title: string) {
+    this.props.title = title
+
+    this.update()
+  }
+
   get description() {
     return this.props.description
   }
 
+  set description(description: string) {
+    this.props.description = description
+
+    this.update()
+  }
+
   get uri() {
     return this.props.uri
+  }
+
+  set uri(uri: string) {
+    this.props.uri = uri
+
+    this.update()
   }
 
   get createdAt() {
@@ -33,24 +51,6 @@ export class Endpoint extends Entity<EndpointProps> {
 
   private update() {
     this.props.updatedAt = new Date()
-  }
-
-  set title(title: string) {
-    this.props.title = title
-
-    this.update()
-  }
-
-  set description(description: string) {
-    this.props.description = description
-
-    this.update()
-  }
-
-  set uri(uri: string) {
-    this.props.uri = uri
-
-    this.update()
   }
 
   static create(

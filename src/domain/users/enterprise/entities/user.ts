@@ -20,8 +20,20 @@ export class User extends Entity<UserProps> {
     return this.props.firstName
   }
 
+  set firstName(firstName: string) {
+    this.props.firstName = firstName
+
+    this.update()
+  }
+
   get lastName() {
     return this.props.lastName
+  }
+
+  set lastName(lastName: string) {
+    this.props.lastName = lastName
+
+    this.update()
   }
 
   get fullName() {
@@ -32,6 +44,12 @@ export class User extends Entity<UserProps> {
     return this.props.birthDate
   }
 
+  set birthDate(birthDate: Date) {
+    this.props.birthDate = birthDate
+
+    this.update()
+  }
+
   get age() {
     return differenceInYears(new Date(), this.props.birthDate)
   }
@@ -40,12 +58,30 @@ export class User extends Entity<UserProps> {
     return this.props.email
   }
 
+  set email(email: string) {
+    this.props.email = email
+
+    this.update()
+  }
+
   get password() {
     return this.props.password
   }
 
+  set password(password: string) {
+    this.props.password = password
+
+    this.update()
+  }
+
   get phone() {
     return this.props.phone
+  }
+
+  set phone(phone: string) {
+    this.props.phone = phone
+
+    this.update()
   }
 
   get createdAt() {
@@ -58,42 +94,6 @@ export class User extends Entity<UserProps> {
 
   private update() {
     this.props.updatedAt = new Date()
-  }
-
-  set firstName(firstName: string) {
-    this.props.firstName = firstName
-
-    this.update()
-  }
-
-  set lastName(lastName: string) {
-    this.props.lastName = lastName
-
-    this.update()
-  }
-
-  set birthDate(birthDate: Date) {
-    this.props.birthDate = birthDate
-
-    this.update()
-  }
-
-  set email(email: string) {
-    this.props.email = email
-
-    this.update()
-  }
-
-  set password(password: string) {
-    this.props.password = password
-
-    this.update()
-  }
-
-  set phone(phone: string) {
-    this.props.phone = phone
-
-    this.update()
   }
 
   static create(props: Optional<UserProps, 'createdAt'>, id?: UniqueEntityID) {

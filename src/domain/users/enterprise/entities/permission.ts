@@ -25,8 +25,21 @@ export class Permission extends Entity<PermissionProps> {
     return this.props.title
   }
 
+  set title(title: string) {
+    this.props.title = title
+    this.props.slug = Slug.createFromText(title)
+
+    this.update()
+  }
+
   get description() {
     return this.props.description
+  }
+
+  set description(description: string) {
+    this.props.description = description
+
+    this.update()
   }
 
   get createdAt() {
@@ -39,19 +52,6 @@ export class Permission extends Entity<PermissionProps> {
 
   private update() {
     this.props.updatedAt = new Date()
-  }
-
-  set title(title: string) {
-    this.props.title = title
-    this.props.slug = Slug.createFromText(title)
-
-    this.update()
-  }
-
-  set description(description: string) {
-    this.props.description = description
-
-    this.update()
   }
 
   static create(
