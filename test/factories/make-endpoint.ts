@@ -4,6 +4,7 @@ import {
   Endpoint,
   EndpointProps,
 } from '@/domain/users/enterprise/entities/endpoint'
+import { HttpMethod } from '@/domain/users/enterprise/enums/http-method'
 import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id'
 
 export function makeEndpoint(
@@ -14,7 +15,8 @@ export function makeEndpoint(
     {
       title: faker.lorem.words(),
       description: faker.lorem.sentence(),
-      uri: faker.internet.url(),
+      httpMethod: HttpMethod.GET,
+      uri: `/${faker.lorem.word()}`,
       ...override,
     },
     id,

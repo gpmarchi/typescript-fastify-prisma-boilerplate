@@ -1,4 +1,5 @@
 import { CreateEndpointUseCase } from '@/domain/users/application/use-cases/create-endpoint'
+import { HttpMethod } from '@/domain/users/enterprise/enums/http-method'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { container } from 'tsyringe'
 import { z } from 'zod'
@@ -10,18 +11,19 @@ export async function createEndpoint(
   const createEndpointBodySchema = z.object({
     title: z.string(),
     description: z.string(),
-    uri: z.string().url(),
+    httpMethod: z.nativeEnum(HttpMethod),
+    uri: z.string().regex(/^\/[a-zA-Z0-9_\-/]+$/),
   })
 
-  const { title, description, uri } = createEndpointBodySchema.parse(
-    request.body,
-  )
+  const { title, description, httpMethod, uri } =
+    createEndpointBodySchema.parse(request.body)
 
   const createEndpoint = container.resolve(CreateEndpointUseCase)
 
   await createEndpoint.execute({
     title,
     description,
+    httpMethod,
     uri,
   })
 

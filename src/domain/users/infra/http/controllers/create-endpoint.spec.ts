@@ -1,5 +1,6 @@
 import 'reflect-metadata'
 
+import { HttpMethod } from '@/domain/users/enterprise/enums/http-method'
 import { app } from '@/shared/infra/http/app'
 import request from 'supertest'
 import { describe, expect, it } from 'vitest'
@@ -17,7 +18,8 @@ describe('Create endpoint (e2e)', () => {
     const response = await request(app.server).post('/endpoints').send({
       title: 'Test title',
       description: 'Test description',
-      uri: 'http://endpoints',
+      httpMethod: HttpMethod.GET,
+      uri: '/endpoints',
     })
 
     expect(response.statusCode).toEqual(201)

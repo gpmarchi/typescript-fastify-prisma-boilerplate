@@ -1,11 +1,13 @@
 import { inject, injectable } from 'tsyringe'
 import { Endpoint } from '../../enterprise/entities/endpoint'
+import { HttpMethod } from '../../enterprise/enums/http-method'
 import { EndpointAlreadyExistsError } from '../errors/endpoint-already-exists-error'
 import { EndpointsRepository } from '../repositories/endpoints-repository'
 
 interface CreateEndpointUseCaseRequest {
   title: string
   description: string
+  httpMethod: HttpMethod
   uri: string
 }
 
@@ -23,6 +25,7 @@ export class CreateEndpointUseCase {
   async execute({
     title,
     description,
+    httpMethod,
     uri,
   }: CreateEndpointUseCaseRequest): Promise<CreateEndpointUseCaseResponse> {
     const existingEndpoint = await this.endpointsRepository.findByTitle(title)
@@ -34,6 +37,7 @@ export class CreateEndpointUseCase {
     const endpoint = Endpoint.create({
       title,
       description,
+      httpMethod,
       uri,
     })
 

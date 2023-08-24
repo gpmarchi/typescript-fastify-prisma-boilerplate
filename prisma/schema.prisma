@@ -7,10 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum HttpMethod {
+  GET
+  POST
+  PUT
+  PATCH
+  DELETE
+
+  @@map("http_method")
+}
+
 model Endpoint {
   id          String      @id @default(uuid())
   title       String      @unique
   description String
+  httpMethod  HttpMethod  @map(name: "http_method")
   uri         String
   permission  Permission?
   createdAt   DateTime    @default(now()) @map(name: "created_at")
