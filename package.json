@@ -16,7 +16,7 @@
     "lint:fix": "eslint src --ext .ts --fix",
     "test": "vitest run --dir src/domain/**/application/use-cases",
     "test:watch": "vitest --dir src/domain/**/application/use-cases",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage --dir src/domain/**/application/use-cases",
     "test:typecheck": "vitest typecheck",
     "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
     "test:install-prisma-environment": "npm link vitest-environment-prisma",
