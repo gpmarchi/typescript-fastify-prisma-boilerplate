@@ -11,7 +11,7 @@ export class PrismaEndpointMapper {
       title: endpoint.title,
       description: endpoint.description,
       httpMethod: endpoint.httpMethod,
-      uri: endpoint.uri,
+      uri: endpoint.uri.toLowerCase(),
       createdAt: endpoint.createdAt,
       updatedAt: endpoint.updatedAt ?? null,
     }

@@ -28,9 +28,14 @@ export class CreateEndpointUseCase {
     httpMethod,
     uri,
   }: CreateEndpointUseCaseRequest): Promise<CreateEndpointUseCaseResponse> {
-    const existingEndpoint = await this.endpointsRepository.findByTitle(title)
+    const existingEndpointTitle = await this.endpointsRepository.findByTitle(
+      title,
+    )
 
-    if (existingEndpoint) {
+    const existingEndpoint =
+      await this.endpointsRepository.findByHttpMethodAndUri(httpMethod, uri)
+
+    if (existingEndpointTitle || existingEndpoint) {
       throw new EndpointAlreadyExistsError()
     }
 
