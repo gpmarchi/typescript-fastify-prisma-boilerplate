@@ -16,6 +16,18 @@ export class InMemoryPermissionsRepository implements PermissionsRepository {
     return permission
   }
 
+  async findByEndpointId(endpointId: string): Promise<Permission | null> {
+    const permission = this.items.find(
+      (permission) => permission.endpointId.toString() === endpointId,
+    )
+
+    if (!permission) {
+      return null
+    }
+
+    return permission
+  }
+
   async countByIds(ids: string[]): Promise<number> {
     const count = this.items.filter((item) =>
       ids.includes(item.id.toString()),

@@ -7,6 +7,7 @@ import { InMemoryPermissionsRepository } from 'test/repositories/users/in-memory
 import { Permission } from '../../enterprise/entities/permission'
 import { EndpointNotFoundError } from '../errors/endpoint-not-found-error'
 import { PermissionAlreadyExistsError } from '../errors/permission-already-exists-error'
+import { PermissionAlreadyExistsForEndpointError } from '../errors/permission-already-exists-for-endpoint-error'
 import { CreatePermissionUseCase } from './create-permission'
 
 let inMemoryPermissionsRepository: InMemoryPermissionsRepository
@@ -72,5 +73,25 @@ describe('Create Permission', () => {
         description: 'New fake permission',
       }),
     ).rejects.toBeInstanceOf(EndpointNotFoundError)
+  })
+
+  it('should not be able to create a permission for an endpoint that has been associated with another permission', async () => {
+    await inMemoryEndpointsRepository.create(
+      makeEndpoint({}, new UniqueEntityID('endpoint-1')),
+    )
+
+    await sut.execute({
+      endpointId: 'endpoint-1',
+      title: 'Fake permission',
+      description: 'New fake permission',
+    })
+
+    await expect(
+      sut.execute({
+        endpointId: 'endpoint-1',
+        title: 'Fake permission 2',
+        description: 'New fake permission 2',
+      }),
+    ).rejects.toBeInstanceOf(PermissionAlreadyExistsForEndpointError)
   })
 })

@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe'
 import { Permission } from '../../enterprise/entities/permission'
 import { EndpointNotFoundError } from '../errors/endpoint-not-found-error'
 import { PermissionAlreadyExistsError } from '../errors/permission-already-exists-error'
+import { PermissionAlreadyExistsForEndpointError } from '../errors/permission-already-exists-for-endpoint-error'
 import { EndpointsRepository } from '../repositories/endpoints-repository'
 import { PermissionsRepository } from '../repositories/permissions-repository'
 
@@ -42,6 +43,13 @@ export class CreatePermissionUseCase {
 
     if (!endpoint) {
       throw new EndpointNotFoundError()
+    }
+
+    const permissionEndpoint =
+      await this.permissionsRepository.findByEndpointId(endpointId)
+
+    if (permissionEndpoint) {
+      throw new PermissionAlreadyExistsForEndpointError()
     }
 
     const permission = Permission.create({
