@@ -34,8 +34,8 @@ model Permission {
   id          String    @id @default(uuid())
   endpointId  String    @unique @map(name: "endpoint_id")
   endpoint    Endpoint  @relation(fields: [endpointId], references: [id], onDelete: Cascade)
-  slug        String
-  title       String
+  slug        String    @unique
+  title       String    @unique
   description String
   createdAt   DateTime  @default(now()) @map(name: "created_at")
   updatedAt   DateTime? @map(name: "updated_at")
