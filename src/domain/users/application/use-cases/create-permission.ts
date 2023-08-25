@@ -1,4 +1,5 @@
 import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id'
+import { inject, injectable } from 'tsyringe'
 import { Permission } from '../../enterprise/entities/permission'
 import { EndpointNotFoundError } from '../errors/endpoint-not-found-error'
 import { PermissionAlreadyExistsError } from '../errors/permission-already-exists-error'
@@ -15,9 +16,12 @@ interface CreatePermissionUseCaseResponse {
   permission: Permission
 }
 
+@injectable()
 export class CreatePermissionUseCase {
   constructor(
+    @inject('PermissionsRepository')
     private permissionsRepository: PermissionsRepository,
+    @inject('EndpointsRepository')
     private endpointsRepository: EndpointsRepository,
   ) {}
 

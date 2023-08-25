@@ -1,3 +1,5 @@
+import 'reflect-metadata'
+
 import { UniqueEntityID } from '@/shared/entities/value-objects/unique-entity-id'
 import { makeEndpoint } from 'test/factories/make-endpoint'
 import { InMemoryEndpointsRepository } from 'test/repositories/users/in-memory-endpoints-repository'
