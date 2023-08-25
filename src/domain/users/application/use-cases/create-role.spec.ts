@@ -41,7 +41,7 @@ describe('Create Role', () => {
     )
     expect(role.title).toEqual('Fake role')
     expect(role.description).toEqual('New fake role')
-    expect(role.slug.value).toEqual('fake-role')
+    expect(role.slug.toString()).toEqual('fake-role')
     expect(role.createdAt).toBeTruthy()
     expect(role.updatedAt).toBeFalsy()
   })

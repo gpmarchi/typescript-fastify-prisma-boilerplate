@@ -5,7 +5,7 @@ export class Slug {
     this._value = value
   }
 
-  get value(): string {
+  toString(): string {
     return this._value
   }
 

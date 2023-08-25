@@ -39,7 +39,7 @@ describe('Create Permission', () => {
     expect(permission.endpointId.toString()).toEqual('endpoint-1')
     expect(permission.title).toEqual('Fake permission')
     expect(permission.description).toEqual('New fake permission')
-    expect(permission.slug.value).toEqual('fake-permission')
+    expect(permission.slug.toString()).toEqual('fake-permission')
     expect(permission.createdAt).toBeTruthy()
     expect(permission.updatedAt).toBeFalsy()
   })
