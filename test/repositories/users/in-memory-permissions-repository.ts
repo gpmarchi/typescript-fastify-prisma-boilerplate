@@ -6,7 +6,7 @@ export class InMemoryPermissionsRepository implements PermissionsRepository {
 
   async findByTitle(title: string): Promise<Permission | null> {
     const permission = this.items.find(
-      (permission) => permission.title === title,
+      (permission) => permission.title.toLowerCase() === title.toLowerCase(),
     )
 
     if (!permission) {
