@@ -22,7 +22,7 @@ describe('Create Permission', () => {
     )
   })
 
-  it('should be able to create an permission', async () => {
+  it('should be able to create a permission', async () => {
     await inMemoryEndpointsRepository.create(
       makeEndpoint({}, new UniqueEntityID('endpoint-1')),
     )
@@ -44,7 +44,7 @@ describe('Create Permission', () => {
     expect(permission.updatedAt).toBeFalsy()
   })
 
-  it('should not be able to create an permission that already exists', async () => {
+  it('should not be able to create a permission that already exists', async () => {
     const permission = Permission.create({
       endpointId: new UniqueEntityID('endpoint-1'),
       title: 'Fake permission',
@@ -62,7 +62,7 @@ describe('Create Permission', () => {
     ).rejects.toBeInstanceOf(PermissionAlreadyExistsError)
   })
 
-  it('should not be able to create an permission with inexistent endpoint', async () => {
+  it('should not be able to create a permission with inexistent endpoint', async () => {
     await expect(
       sut.execute({
         endpointId: 'endpoint-1',
