@@ -1,5 +1,3 @@
-import 'reflect-metadata'
-
 import { HttpMethod } from '@/domain/users/enterprise/enums/http-method'
 import { app } from '@/shared/infra/http/app'
 import request from 'supertest'

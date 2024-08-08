@@ -1,5 +1,3 @@
-import 'reflect-metadata'
-
 import { prisma } from '@/shared/infra/database/prisma'
 import { app } from '@/shared/infra/http/app'
 import request from 'supertest'

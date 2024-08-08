@@ -1,5 +1,3 @@
-import 'reflect-metadata'
-
 import { InMemoryEndpointsRepository } from 'test/repositories/users/in-memory-endpoints-repository'
 import { Endpoint } from '../../enterprise/entities/endpoint'
 import { HttpMethod } from '../../enterprise/enums/http-method'
